@@ -1,0 +1,97 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}"/>
+
+<div class="heading">
+    <div class="logo">
+        <h1 class="logoText">НетМаркет</h1>
+    </div>
+
+    <div class="navigation">
+        <a class="navlink" href="/">Главная</a>
+    </div>
+</div>
+
+<div class="productCard">
+    <img src="{{ product.image_url }}" class="productImage">
+    <div class="productInfo">
+        <h1>{{ product.name }}</h1>
+        <h3>{{ product.price }} ₽</h3>
+
+            <h2 class="textGreen">Пока не продается</h2>
+
+    </div>
+</div>
+
+<div class="productDetails">
+    <h1>Описание:</h1>
+    <p>
+        {{ product.description }}
+    </p>
+
+    <h1>Характеристики:</h1>
+
+    {% if product.weight %}
+    <div class="charRow">
+        <p>
+            Вес:
+        </p>
+        <p>
+            {{ product.weight }} грамм
+        </p>
+    </div>
+    {% endif %}
+
+    {% if product.model %}
+    <div class="charRow">
+        <p>
+            Модель:
+        </p>
+        <p>
+            {{ product.model }}
+        </p>
+    </div>
+    {% endif %}
+
+    <h1>Отзывы:</h1>
+
+    <div class="reviews">
+        {% for review in reviews %}
+        <div class="review">
+            <div class="reviewHeader">
+                <h2>{{ review.author }}</h2>
+
+                {% if review.rating == 1 %}
+                <h2 class="textGreen">Положительная</h2>
+                {% else %}
+                <h2 class="textRed">Отрицательная</h2>
+                {% endif %}
+
+            </div>
+            <p>
+                {{ review.text }}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h1>Создать отзыв:</h1>
+    <div class="createReview">
+        <form class="createReviewForm" method="POST">
+            {% csrf_token %}
+
+            <label for="author">Автор:</label>
+            <input name="author" class="inputElement" />
+
+            <label for="rating">Оценка:</label>
+            <select name="rating" class="inputElement">
+                <option value="1">Положительная</option>
+                <option value="0">Отрицательная</option>
+            </select>
+
+            <label for="text">Текст отзыва:</label>
+            <textarea name="text" rows="10" class="inputElement"></textarea>
+
+            <button>Отправить отзыв</button>
+        </form>
+    </div>
+</div>
